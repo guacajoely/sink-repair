@@ -1,0 +1,30 @@
+*{
+    --example-button: #474f9e;
+}
+
+main {
+    margin-top: 20px;
+    margin-left: 30px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0;
+}
+
+.label {
+    font-size: 18px;
+}
+
+input{
+    width: 500px;
+}
+
+#submitRequest{
+        margin: 2rem 0;
+        padding: 0.5rem;
+        background-color: var(--example-button);
+        color: white;
+        font-size: 1rem;
+}
