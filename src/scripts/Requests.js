@@ -77,18 +77,21 @@ mainContainer.addEventListener("change",(event) => {
         const requests = getRequests()
         let matchingRequest = null
         for(const request of requests){
-            if(parseInt(request.id) === parseInt(requestId)){
+            if(request.id === parseInt(requestId)){
                 matchingRequest = request
                 matchingRequest.completed = true
+                delete matchingRequest.id
             }
         }
   
         console.log(matchingRequest)
+        console.log(requestId)
 
-        //CALLING DELETEREQUEST AND SAVEREQUEST FUNCTIONS BREAKS EVERYTHING. WHY????
-        deleteRequest(parseInt(requestId))
-        sendRequest(matchingRequest)
+        //CALLING DELETEREQUEST AND SAVEREQUEST FUNCTIONS MAKE COMPUTER MAD. WHY????
+        //ALSO... NOT SAVING COMPLETION EVEN IF REST WORK. MAKE NO SENSE.
 
+        // deleteRequest(requestId)
+        // sendRequest(matchingRequest)
     }
 })
 

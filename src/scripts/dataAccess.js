@@ -19,7 +19,7 @@ export const fetchRequests = () => {
 
 export const getRequests = () => {
     let unsortedArray = applicationState.requests.map(obj => ({...obj}))
-    const sortedArray = unsortedArray.sort((a, b) => parseFloat(a.completed) - parseFloat(b.completed));
+    const sortedArray = unsortedArray.sort((a, b) => a.completed - b.completed);
     return sortedArray
 }
 
