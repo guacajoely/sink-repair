@@ -1,5 +1,7 @@
 *{
-    --example-button: #474f9e;
+    --example-submit-button: #474f9e;
+    --example-delete-button: #a347db;
+    --example-gray-background: #ebe9ea;
 }
 
 main {
@@ -21,10 +23,38 @@ input{
     width: 500px;
 }
 
-#submitRequest{
-        margin: 2rem 0;
-        padding: 0.5rem;
-        background-color: var(--example-button);
-        color: white;
-        font-size: 1rem;
+.request__submit{
+    margin: 2rem 0;
+    padding: 0.5rem;
+    background-color: var(--example-submit-button);
+    color: white;
+    font-size: 1rem;
+}
+
+.request__delete{
+    padding: 5px;
+    background-color: var(--example-delete-button);
+    color: white;
+}
+
+ul, li {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul{
+    border: thin dotted lightblue;
+    width: 402px;
+}
+
+li {
+    padding: 10px;
+    width: 400px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+li:nth-child(odd){
+    background-color: var(--example-gray-background);
 }
