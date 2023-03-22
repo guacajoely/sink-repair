@@ -1,6 +1,5 @@
 const applicationState = {
-
-    requests: []
+requests: []
 
 }
 
@@ -18,12 +17,15 @@ export const fetchRequests = () => {
 }
 
 export const getRequests = () => {
-    return applicationState.requests.map(obj => ({...obj}))
+    let unsortedArray = applicationState.requests.map(obj => ({...obj}))
+    const sortedArray = unsortedArray.sort((a, b) => parseFloat(a.completed) - parseFloat(b.completed));
+    return sortedArray
 }
 
 export const getPlumbers = () => {
     return applicationState.plumbers.map(obj => ({...obj}))
 }
+
 
  //had to declare main container before dispatching custom events using it
  const mainContainer = document.querySelector("#container")
