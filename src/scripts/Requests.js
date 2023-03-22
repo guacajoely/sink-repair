@@ -1,4 +1,4 @@
-import { getRequests, sendRequest, deleteRequest, saveCompletion, markComplete } from "./dataAccess.js"
+import { getRequests, sendRequest, deleteRequest, saveCompletion } from "./dataAccess.js"
 import { createPlumberDropdown } from "./plumbers.js"
 
 export const Requests = () => {
@@ -84,8 +84,10 @@ mainContainer.addEventListener("change",(event) => {
         }
   
         console.log(matchingRequest)
-        
+
         //CALLING DELETEREQUEST AND SAVEREQUEST FUNCTIONS BREAKS EVERYTHING. WHY????
+        deleteRequest(parseInt(requestId))
+        sendRequest(matchingRequest)
 
     }
 })

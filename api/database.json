@@ -9,22 +9,31 @@
       "name": "Merle"
     }
   ],
-  "completions": [
-    {
-      "requestId": "1",
-      "plumberId": "1",
-      "date_created": "1679519775010",
-      "id": 1
-    }
-  ],
+  "completions": [],
   "requests": [
     {
-      "description": "EXAMPLE DESC",
-      "address": "123 MAIN ST",
-      "budget": "200",
-      "neededBy": "2023-03-23",
-      "completed": false,
+      "description": "add another",
+      "address": "123 main st",
+      "budget": "123",
+      "neededBy": "2023-03-01",
+      "completed": true,
       "id": 1
+    },
+    {
+      "description": "how about this one",
+      "address": "maybe now",
+      "budget": "123",
+      "neededBy": "2023-03-24",
+      "completed": true,
+      "id": 2
+    },
+    {
+      "description": "and another one",
+      "address": "1234 hall ",
+      "budget": "63",
+      "neededBy": "2023-03-23",
+      "completed": true,
+      "id": 3
     }
   ]
 }
