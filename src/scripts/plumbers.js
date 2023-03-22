@@ -9,8 +9,6 @@ export const createPlumberDropdown = (request) => {
             ${
                 plumbers.map(
                     plumber => {
-                        console.log(request)
-                        console.log(plumber)
                         return `<option value="${request.id}--${plumber.id}">${plumber.name}</option>`
                     }
                 ).join("")
