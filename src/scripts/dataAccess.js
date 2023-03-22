@@ -21,6 +21,8 @@ export const getRequests = () => {
     return applicationState.requests.map(obj => ({...obj}))
 }
 
+ //had to declare main container before dispatching custom events using it
+ const mainContainer = document.querySelector("#container")
 
 export const sendRequest = (userServiceRequest) => {
     const fetchOptions = {
@@ -31,10 +33,29 @@ export const sendRequest = (userServiceRequest) => {
         body: JSON.stringify(userServiceRequest)
     }
 
-
     return fetch(`${API}/requests`, fetchOptions)
         .then(response => response.json())
         .then(() => {
-
+            mainContainer.dispatchEvent(new CustomEvent("stateChanged"))
         })
+}
+
+//The function whose responsiblity it is to initiate the fetch request for DELETE must have the primary key sent to it as an argument.
+export const deleteRequest = (id) => {
+    return fetch(`${API}/requests/${id}`, { method: "DELETE" })
+        .then(
+            () => {
+                mainContainer.dispatchEvent(new CustomEvent("stateChanged"))
+            }
+        )
+}
+
+export const fetchPlumbers = () => {
+    return fetch(`${API}/plumbers`)
+        .then(response => response.json())
+        .then(
+            (data) => {
+                applicationState.plumbers = data
+            }
+        )
 }
