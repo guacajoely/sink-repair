@@ -1,10 +1,6 @@
-const applicationState = {
-
-    requests: []
-
-}
-
+const applicationState = {}
 const API = "http://localhost:8088"
+const mainContainer = document.querySelector("#container")
 
 export const fetchRequests = () => {
     return fetch(`${API}/requests`)
@@ -16,63 +12,6 @@ export const fetchRequests = () => {
             }
         )
 }
-
-export const getRequests = () => {
-    let unsortedArray = applicationState.requests.map(obj => ({...obj}))
-    const sortedArray = unsortedArray.sort((a, b) => a.completed - b.completed);
-    return sortedArray
-}
-
-export const getPlumbers = () => {
-    return applicationState.plumbers.map(obj => ({...obj}))
-}
-
-
- //had to declare main container before dispatching custom events using it
- const mainContainer = document.querySelector("#container")
-
-export const sendRequest = (userServiceRequest) => {
-    const fetchOptions = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(userServiceRequest)
-    }
-
-    return fetch(`${API}/requests`, fetchOptions)
-        .then(response => response.json())
-        .then(() => {
-            mainContainer.dispatchEvent(new CustomEvent("stateChanged"))
-        })
-}
-
-export const saveCompletion = (completedJob) => {
-    const fetchOptions = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(completedJob)
-    }
-
-    return fetch(`${API}/completions`, fetchOptions)
-        .then(response => response.json())
-        .then(() => {
-            mainContainer.dispatchEvent(new CustomEvent("stateChanged"))
-        })
-}
-
-//The function whose responsiblity it is to initiate the fetch request for DELETE must have the primary key sent to it as an argument.
-export const deleteRequest = (id) => {
-    return fetch(`${API}/requests/${id}`, { method: "DELETE" })
-        .then(
-            () => {
-                mainContainer.dispatchEvent(new CustomEvent("stateChanged"))
-            }
-        )
-}
-
 
 export const fetchPlumbers = () => {
     return fetch(`${API}/plumbers`)
@@ -92,4 +31,56 @@ export const fetchCompletions = () => {
                 applicationState.completions = data
             }
         )
+}
+
+export const getRequests = () => {
+    let unsortedArray = applicationState.requests.map(obj => ({ ...obj }))
+    const sortedArray = unsortedArray.sort((a, b) => a.completed - b.completed);
+    return sortedArray
+}
+
+export const getPlumbers = () => {
+    return applicationState.plumbers.map(obj => ({ ...obj }))
+}
+
+export const sendRequest = (userServiceRequest) => {
+    const fetchOptions = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(userServiceRequest)
+    }
+
+    return fetch(`${API}/requests`, fetchOptions)
+        .then(response => response.json())
+        .then(() => {
+            mainContainer.dispatchEvent(new CustomEvent("stateChanged"))
+        })
+}
+
+//The function whose responsiblity it is to initiate the fetch request for DELETE must have the primary key sent to it as an argument.
+export const deleteRequest = (id) => {
+    return fetch(`${API}/requests/${id}`, { method: "DELETE" })
+        .then(
+            () => {
+                mainContainer.dispatchEvent(new CustomEvent("stateChanged"))
+            }
+        )
+}
+
+export const saveCompletion = (completedJob) => {
+    const fetchOptions = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(completedJob)
+    }
+
+    return fetch(`${API}/completions`, fetchOptions)
+        .then(response => response.json())
+        .then(() => {
+            mainContainer.dispatchEvent(new CustomEvent("stateChanged"))
+        })
 }
