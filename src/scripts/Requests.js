@@ -1,4 +1,4 @@
-import { getRequests, sendRequest, deleteRequest, saveCompletion, markCompletionsComplete } from "./dataAccess.js"
+import { getRequests, sendRequest, deleteRequest, saveCompletion, markCompletionsComplete, getPlumbers, getCompletions} from "./dataAccess.js"
 import { createPlumberDropdown } from "./plumbers.js"
 
 export const Requests = () => {
@@ -15,23 +15,6 @@ const convertRequestToListElement = (objectFromArray) => {
 
     if(!objectFromArray.completed){
 
-    return `
-    <li>
-        <div>
-        <img src="./icon.png">
-        ${objectFromArray.description}
-        </div>
-        <div class='plumbers'>
-        ${createPlumberDropdown(objectFromArray)}
-        </div>
-        <button class="request__delete"
-                id="request--${objectFromArray.id}">
-            Delete
-        </button>
-    </li>`   
-    }
-
-    else{
         return `
         <li>
             <div>
@@ -39,13 +22,44 @@ const convertRequestToListElement = (objectFromArray) => {
             ${objectFromArray.description}
             </div>
             <div class='plumbers'>
-            COMPLETE
+            ${createPlumberDropdown(objectFromArray)}
             </div>
             <button class="request__delete"
                     id="request--${objectFromArray.id}">
                 Delete
             </button>
         </li>`   
+        }
+
+        else{
+
+            //get most current completions and plumber arrays inside function
+            const completions = getCompletions()
+            const plumbers = getPlumbers()
+
+            //now we need to grab the plumbers name
+            for(const completion of completions){
+                if(objectFromArray.id === parseInt(completion.requestId)){
+                    const matchingPlumber = plumbers.find((plumber) => {
+                        return parseInt(completion.plumberId) === plumber.id
+                    })
+
+                return `
+                <li>
+                    <div>
+                    <img src="./icon.png">
+                    ${objectFromArray.description}
+                    </div>
+                    <div class='plumbers'>
+                    completed by ${matchingPlumber.name}
+                    </div>
+                    <button class="request__delete"
+                            id="request--${objectFromArray.id}">
+                        Delete
+                    </button>
+                </li>`   
+                }
+        }   
     }
 }
 

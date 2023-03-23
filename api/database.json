@@ -15,6 +15,18 @@
       "plumberId": "1",
       "date_created": "1679565213913",
       "id": 1
+    },
+    {
+      "requestId": "2",
+      "plumberId": "1",
+      "date_created": "1679580111388",
+      "id": 2
+    },
+    {
+      "requestId": "3",
+      "plumberId": "2",
+      "date_created": "1679580116781",
+      "id": 3
     }
   ],
   "requests": [
@@ -33,6 +45,14 @@
       "neededBy": "2023-03-23",
       "completed": false,
       "id": 2
+    },
+    {
+      "description": "something",
+      "address": "123 main st",
+      "budget": "1234",
+      "neededBy": "2023-03-24",
+      "completed": false,
+      "id": 3
     }
   ]
 }

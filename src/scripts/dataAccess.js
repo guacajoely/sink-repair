@@ -43,6 +43,10 @@ export const getPlumbers = () => {
     return applicationState.plumbers.map(obj => ({ ...obj }))
 }
 
+export const getCompletions = () => {
+    return applicationState.completions.map(obj => ({ ...obj }))
+}
+
 export const sendRequest = (userServiceRequest) => {
     const fetchOptions = {
         method: "POST",
