@@ -1,6 +1,5 @@
 import { createHTML } from "./createHTML.js"
-import { fetchCompletions, fetchRequests } from "./dataAccess.js"
-import { fetchPlumbers } from "./dataAccess.js"
+import { fetchRequests, fetchPlumbers, fetchCompletions } from "./dataAccess.js"
 
 const mainContainer = document.querySelector("#container")
 
@@ -18,7 +17,7 @@ const render = () => {
 render()
 
 mainContainer.addEventListener("stateChanged", customEvent => {
-        render()
-    }
+    render()
+}
 )
 

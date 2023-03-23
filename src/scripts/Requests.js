@@ -84,12 +84,10 @@ mainContainer.addEventListener("change",(event) => {
             }
         }
   
-        console.log(matchingRequest)
-        console.log(requestId)
+        console.log(`request id ${requestId} has been completed`)
 
         //CALLING DELETEREQUEST AND SAVEREQUEST FUNCTIONS MAKE COMPUTER MAD. WHY????
         //ALSO... NOT SAVING COMPLETION EVEN IF REST WORK. MAKE NO SENSE.
-
         // deleteRequest(requestId)
         // sendRequest(matchingRequest)
     }

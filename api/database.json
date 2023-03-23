@@ -9,47 +9,22 @@
       "name": "Merle"
     }
   ],
-  "completions": [],
+  "completions": [
+    {
+      "requestId": "1",
+      "plumberId": "1",
+      "date_created": "1679565213913",
+      "id": 1
+    }
+  ],
   "requests": [
     {
-      "description": "final test",
+      "description": "Test",
       "address": "123 main st",
       "budget": "1234",
       "neededBy": "2023-03-23",
-      "completed": true,
-      "id": 3
-    },
-    {
-      "description": "ANOTHER TEST",
-      "address": "SOME ADDRESS",
-      "budget": "123456",
-      "neededBy": "2023-04-04",
-      "completed": true,
-      "id": 4
-    },
-    {
-      "description": "sometimes i work",
-      "address": "1234 main st",
-      "budget": "12345",
-      "neededBy": "2023-03-15",
-      "completed": true,
-      "id": 6
-    },
-    {
-      "description": "leaky sink",
-      "address": "123 main str",
-      "budget": "1234",
-      "neededBy": "2023-03-23",
-      "completed": true,
-      "id": 7
-    },
-    {
-      "description": "another test",
-      "address": "12345",
-      "budget": "123",
-      "neededBy": "2023-03-24",
-      "completed": true,
-      "id": 9
+      "completed": false,
+      "id": 1
     }
   ]
 }
