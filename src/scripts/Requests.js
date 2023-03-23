@@ -1,50 +1,76 @@
-import { getRequests, sendRequest, deleteRequest, saveCompletion } from "./dataAccess.js"
+import { getRequests, sendRequest, deleteRequest, saveCompletion, getCompletions, getPlumbers } from "./dataAccess.js"
 import { createPlumberDropdown } from "./plumbers.js"
 
 export const Requests = () => {
     const requests = getRequests()
 
-    let html = `<ul>${requests.map(convertRequestToListElement).join("")}</ul>`
+    let html = `<ul>${requests.map(convertRequestToListElement).join("")}${requests.map(convertCompletionToListElement).join("")}</ul>`
     return html
 }
 
 const convertRequestToListElement = (objectFromArray) => {
 
-    if(!objectFromArray.completed){
+    //get most current completions array inside function
+    const completions = getCompletions()
 
-    return `
-    <li>
-        <div>
-        <img src="./icon.png">
-        ${objectFromArray.description}
-        </div>
-        <div class='plumbers'>
-        ${createPlumberDropdown(objectFromArray)}
-        </div>
-        <button class="request__delete"
-                id="request--${objectFromArray.id}">
-            Delete
-        </button>
-    </li>`   
-    }
+    //make sure there are no matching completions before generating html with a plumber dropdown
+    const matchingCompletion = completions.find((completion) => {
+        return objectFromArray.id === parseInt(completion.requestId)
+    })
 
-    else{
+    if(!matchingCompletion){
+
         return `
-        <li>
-            <div>
-            <img src="./icon.png">
-            ${objectFromArray.description}
-            </div>
-            <div class='plumbers'>
-            COMPLETE
-            </div>
-            <button class="request__delete"
-                    id="request--${objectFromArray.id}">
-                Delete
-            </button>
-        </li>`   
+            <li>
+                <div>
+                <img src="./icon.png">
+                ${objectFromArray.description}
+                </div>
+                <div class='plumbers'>
+                ${createPlumberDropdown(objectFromArray)}
+                </div>
+                <button class="request__delete"
+                        id="request--${objectFromArray.id}">
+                    Delete
+                </button>
+            </li>`      
     }
 }
+
+
+const convertCompletionToListElement = (objectFromArray) => {
+
+    //get most current completions and plumber arrays inside function
+    const completions = getCompletions()
+    const plumbers = getPlumbers()
+
+    //now we need to make sure the request IS completed before generating HTML without a dropdown
+    for(const completion of completions){
+        if(objectFromArray.id === parseInt(completion.requestId)){
+
+            const matchingPlumber = plumbers.find((plumber) => {
+                return parseInt(completion.plumberId) === plumber.id
+            })
+
+            return `
+            <li style="background-color: pink">
+                <div>
+                <img src="./icon.png">
+                ${objectFromArray.description}
+                </div>
+                <div class='plumbers'>
+                completed by ${matchingPlumber.name}
+                </div>
+                <button class="request__delete"
+                        id="request--${objectFromArray.id}">
+                    Delete
+                </button>
+            </li>`   
+    
+        }
+    }
+}
+
 
 const mainContainer = document.querySelector("#container")
 
@@ -57,7 +83,6 @@ mainContainer.addEventListener("click", click => {
 
 
 mainContainer.addEventListener("change",(event) => {
-
     if (event.target.id === "plumbers") {
     
         //GRAB THE IDS FROM THE OPTION'S ID
@@ -73,23 +98,6 @@ mainContainer.addEventListener("change",(event) => {
         //CALL THE SAVECOMPLETION FUNCTION PASSING IN THE OBJECT WE JUST CREATED
         saveCompletion(completion)
 
-        //loop through requests, change completed to true on the matching request, then delete the old one and send the new one that is marked complete
-        const requests = getRequests()
-        let matchingRequest = null
-        for(const request of requests){
-            if(request.id === parseInt(requestId)){
-                matchingRequest = request
-                matchingRequest.completed = true
-                delete matchingRequest.id
-            }
-        }
-  
-        console.log(`request id ${requestId} has been completed`)
-
-        //CALLING DELETEREQUEST AND SAVEREQUEST FUNCTIONS MAKE COMPUTER MAD. WHY????
-        //ALSO... NOT SAVING COMPLETION EVEN IF REST WORK. MAKE NO SENSE.
-        // deleteRequest(requestId)
-        // sendRequest(matchingRequest)
     }
 })
 
