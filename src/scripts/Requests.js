@@ -1,7 +1,10 @@
-import { getRequests, sendRequest, deleteRequest, saveCompletion } from "./dataAccess.js"
+import { getRequests, sendRequest, deleteRequest, saveCompletion, markCompletionsComplete } from "./dataAccess.js"
 import { createPlumberDropdown } from "./plumbers.js"
 
 export const Requests = () => {
+    
+    //MARK REQUESTS COMPLETE BEFORE STORING REQUESTS!!!
+    markCompletionsComplete()
     const requests = getRequests()
 
     let html = `<ul>${requests.map(convertRequestToListElement).join("")}</ul>`
@@ -84,7 +87,7 @@ mainContainer.addEventListener("change",(event) => {
             }
         }
   
-        console.log(`request id ${requestId} has been completed`)
+        console.log(`A completion has been created for request #${requestId}`)
 
         //CALLING DELETEREQUEST AND SAVEREQUEST FUNCTIONS MAKE COMPUTER MAD. WHY????
         //ALSO... NOT SAVING COMPLETION EVEN IF REST WORK. MAKE NO SENSE.

@@ -84,3 +84,21 @@ export const saveCompletion = (completedJob) => {
             mainContainer.dispatchEvent(new CustomEvent("stateChanged"))
         })
 }
+
+
+export const markCompletionsComplete = () => {
+
+    let matchingRequest = null
+    const requests = getRequests()
+    for(const completion of applicationState.completions){
+        matchingRequest = requests.find((request) => {
+            return parseInt(request.id) === parseInt(completion.requestId)
+        })
+        for(const request of applicationState.requests){
+            if(parseInt(matchingRequest.id) === parseInt(request.id)){
+                request.completed = true
+                console.log(`request #${request.id} has been marked complete`)
+            }
+        }
+    }
+}       
