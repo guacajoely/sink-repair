@@ -18,7 +18,7 @@ const convertRequestToListElement = (objectFromArray) => {
         return `
         <li>
             <div>
-            <img src="./icon.png">
+            <img src="./images/icon.png">
             ${objectFromArray.description}
             </div>
             <div class='plumbers'>
@@ -47,7 +47,7 @@ const convertRequestToListElement = (objectFromArray) => {
                 return `
                 <li>
                     <div>
-                    <img src="./icon.png">
+                    <img src="./images/icon.png">
                     ${objectFromArray.description}
                     </div>
                     <div class='plumbers'>
@@ -89,24 +89,9 @@ mainContainer.addEventListener("change",(event) => {
 
         //CALL THE SAVECOMPLETION FUNCTION PASSING IN THE OBJECT WE JUST CREATED
         saveCompletion(completion)
-
-        //loop through requests, change completed to true on the matching request, then delete the old one and send the new one that is marked complete
-        const requests = getRequests()
-        let matchingRequest = null
-        for(const request of requests){
-            if(request.id === parseInt(requestId)){
-                matchingRequest = request
-                matchingRequest.completed = true
-                delete matchingRequest.id
-            }
-        }
   
         console.log(`A completion has been created for request #${requestId}`)
 
-        //CALLING DELETEREQUEST AND SAVEREQUEST FUNCTIONS MAKE COMPUTER MAD. WHY????
-        //ALSO... NOT SAVING COMPLETION EVEN IF REST WORK. MAKE NO SENSE.
-        // deleteRequest(requestId)
-        // sendRequest(matchingRequest)
     }
 })
 
