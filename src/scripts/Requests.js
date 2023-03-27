@@ -18,7 +18,7 @@ const convertRequestToListElement = (objectFromArray) => {
         return `
         <li>
             <div>
-            <img src="./icon.png">
+            <img src="./images/icon.png">
             ${objectFromArray.description}
             </div>
             <div class='plumbers'>
@@ -47,7 +47,7 @@ const convertRequestToListElement = (objectFromArray) => {
                 return `
                 <li>
                     <div>
-                    <img src="./icon.png">
+                    <img src="./images/icon.png">
                     ${objectFromArray.description}
                     </div>
                     <div class='plumbers'>
