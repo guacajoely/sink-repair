@@ -10,21 +10,9 @@
     }
   ],
   "completions": [
-    {
-      "requestId": "1",
-      "plumberId": "1",
-      "date_created": "1679937280681",
-      "id": 1
-    }
+
   ],
   "requests": [
-    {
-      "description": "something ",
-      "address": "asdad",
-      "budget": "1234",
-      "neededBy": "2023-03-30",
-      "completed": false,
-      "id": 1
-    }
+
   ]
 }
