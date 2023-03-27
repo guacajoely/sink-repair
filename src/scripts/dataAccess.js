@@ -89,3 +89,19 @@ export const saveCompletion = (completedJob) => {
             mainContainer.dispatchEvent(new CustomEvent("stateChanged"))
         })
 }
+
+
+export const updateRequestComplete = (id) =>{
+
+fetch(`${API}/requests/${id}`, {
+  method: 'PATCH',
+  body: JSON.stringify({
+    completed: true,
+  }),
+  headers: {
+    'Content-type': 'application/json; charset=UTF-8',
+  },
+})
+  .then((response) => response.json())
+  .then(() => mainContainer.dispatchEvent(new CustomEvent("stateChanged")));
+}
