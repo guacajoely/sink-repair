@@ -69,6 +69,7 @@ mainContainer.addEventListener("change",(event) => {
 
         // CREATE A NEW COMPLETION OBJECT
         const completion = { 
+            id: requestId,
             requestId: requestId,
             plumberId: plumberId,
             date_created: `${Date.now()}`
