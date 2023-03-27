@@ -1,10 +1,8 @@
-import { getRequests, sendRequest, deleteRequest, saveCompletion, markCompletionsComplete, getPlumbers, getCompletions} from "./dataAccess.js"
+import { getRequests, sendRequest, deleteRequest, saveCompletion, getPlumbers, getCompletions} from "./dataAccess.js"
 import { createPlumberDropdown } from "./plumbers.js"
 
 export const Requests = () => {
     
-    //MARK REQUESTS COMPLETE BEFORE STORING REQUESTS!!!
-    markCompletionsComplete()
     const requests = getRequests()
 
     let html = `<ul>${requests.map(convertRequestToListElement).join("")}</ul>`
@@ -33,17 +31,6 @@ const convertRequestToListElement = (objectFromArray) => {
 
         else{
 
-            //get most current completions and plumber arrays inside function
-            const completions = getCompletions()
-            const plumbers = getPlumbers()
-
-            //now we need to grab the plumbers name
-            for(const completion of completions){
-                if(objectFromArray.id === parseInt(completion.requestId)){
-                    const matchingPlumber = plumbers.find((plumber) => {
-                        return parseInt(completion.plumberId) === plumber.id
-                    })
-
                 return `
                 <li>
                     <div>
@@ -51,17 +38,17 @@ const convertRequestToListElement = (objectFromArray) => {
                     ${objectFromArray.description}
                     </div>
                     <div class='plumbers'>
-                    completed by ${matchingPlumber.name}
+                    complete
                     </div>
                     <button class="request__delete"
                             id="request--${objectFromArray.id}">
                         Delete
                     </button>
                 </li>`   
-                }
+                
         }   
     }
-}
+
 
 const mainContainer = document.querySelector("#container")
 
@@ -88,25 +75,29 @@ mainContainer.addEventListener("change",(event) => {
         }
 
         //CALL THE SAVECOMPLETION FUNCTION PASSING IN THE OBJECT WE JUST CREATED
-        saveCompletion(completion)
+        saveCompletion(completion).then( () => {
 
-        //loop through requests, change completed to true on the matching request, then delete the old one and send the new one that is marked complete
-        const requests = getRequests()
-        let matchingRequest = null
-        for(const request of requests){
-            if(request.id === parseInt(requestId)){
-                matchingRequest = request
-                matchingRequest.completed = true
-                delete matchingRequest.id
+            //loop through requests, change completed to true on the matching request, then delete the old one and send the new one that is marked complete
+            const requests = getRequests()
+            let matchingRequest = null
+            for(const request of requests){
+                if(request.id === parseInt(requestId)){
+                    matchingRequest = request
+                    matchingRequest.completed = true
+                }
             }
-        }
-  
-        console.log(`A completion has been created for request #${requestId}`)
+    
+            console.log(`A completion has been created for request #${requestId}`)
 
-        //CALLING DELETEREQUEST AND SAVEREQUEST FUNCTIONS MAKE COMPUTER MAD. WHY????
-        //ALSO... NOT SAVING COMPLETION EVEN IF REST WORK. MAKE NO SENSE.
-        // deleteRequest(requestId)
-        // sendRequest(matchingRequest)
+            //CALLING DELETEREQUEST AND SAVEREQUEST FUNCTIONS MAKE COMPUTER MAD. WHY????
+            //ALSO... NOT SAVING COMPLETION EVEN IF REST WORK. MAKE NO SENSE.
+            deleteRequest(requestId).then( () => {
+
+                sendRequest(matchingRequest)
+                mainContainer.dispatchEvent(new CustomEvent("stateChanged"))
+
+            })
+        })
     }
 })
 
