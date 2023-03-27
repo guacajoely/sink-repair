@@ -1,4 +1,4 @@
-import { getRequests, sendRequest, deleteRequest, saveCompletion, getPlumbers, getCompletions} from "./dataAccess.js"
+import { getRequests, sendRequest, deleteRequest, saveCompletion, getPlumbers, getCompletions, updateRequestComplete} from "./dataAccess.js"
 import { createPlumberDropdown } from "./plumbers.js"
 
 export const Requests = () => {
@@ -69,7 +69,6 @@ mainContainer.addEventListener("change",(event) => {
 
         // CREATE A NEW COMPLETION OBJECT
         const completion = { 
-            id: requestId,
             requestId: requestId,
             plumberId: plumberId,
             date_created: `${Date.now()}`
@@ -90,15 +89,17 @@ mainContainer.addEventListener("change",(event) => {
     
             console.log(`A completion has been created for request #${requestId}`)
 
+            updateRequestComplete(requestId)
+
             //CALLING DELETEREQUEST AND SAVEREQUEST FUNCTIONS MAKE COMPUTER MAD. WHY????
             //ALSO... NOT SAVING COMPLETION EVEN IF REST WORK. MAKE NO SENSE.
-            deleteRequest(requestId).then( () => {
+            // deleteRequest(requestId).then( () => {
 
-                sendRequest(matchingRequest)
-                console.log(`The request for ${matchingRequest.description} has been marked complete in the database`)
-                mainContainer.dispatchEvent(new CustomEvent("stateChanged"))
+                // sendRequest(matchingRequest)
+                // console.log(`The request for ${matchingRequest.description} has been marked complete in the database`)
+                // mainContainer.dispatchEvent(new CustomEvent("stateChanged"))
 
-            })
+        //     })
         })
     }
 })
