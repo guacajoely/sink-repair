@@ -89,8 +89,7 @@ mainContainer.addEventListener("change",(event) => {
 
         //CALL THE SAVECOMPLETION FUNCTION PASSING IN THE OBJECT WE JUST CREATED
         saveCompletion(completion)
-  
-        console.log(`A completion has been created for request #${requestId}`)
+        console.log(`A completion has been created and sent for request #${requestId}`)
 
     }
 })

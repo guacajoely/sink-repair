@@ -68,6 +68,7 @@ export const deleteRequest = (id) => {
     return fetch(`${API}/requests/${id}`, { method: "DELETE" })
         .then(
             () => {
+                console.log(`request #${id} has been deleted`)
                 mainContainer.dispatchEvent(new CustomEvent("stateChanged"))
             }
         )
@@ -101,7 +102,7 @@ export const markCompletionsComplete = () => {
         for(const request of applicationState.requests){
             if(parseInt(matchingRequest.id) === parseInt(request.id)){
                 request.completed = true
-                console.log(`request #${request.id} has been marked complete`)
+                console.log(`request #${request.id} is marked complete in application state`)
             }
         }
     }
