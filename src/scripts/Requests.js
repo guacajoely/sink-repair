@@ -52,7 +52,7 @@ const convertRequestToListElement = (objectFromArray) => {
 
 const mainContainer = document.querySelector("#container")
 
-mainContainer.addEventListener("click", click => {
+document.addEventListener("click", click => {
     if (click.target.id.startsWith("request--")) {
         const [,requestId] = click.target.id.split("--")
         deleteRequest(parseInt(requestId))
@@ -94,6 +94,7 @@ mainContainer.addEventListener("change",(event) => {
             deleteRequest(requestId).then( () => {
 
                 sendRequest(matchingRequest)
+                console.log(`The request for ${matchingRequest.description} has been marked complete in the database`)
                 mainContainer.dispatchEvent(new CustomEvent("stateChanged"))
 
             })

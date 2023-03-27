@@ -48,5 +48,6 @@ mainContainer.addEventListener("click", clickEvent => {
 
         // Send the data to the API for permanent storage
         sendRequest(dataToSendToAPI)
+        console.log(`A request has been submitted for ${userDescription}`)
     }
 })

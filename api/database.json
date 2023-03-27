@@ -10,30 +10,5 @@
     }
   ],
   "completions": [],
-  "requests": [
-    {
-      "description": "asdad",
-      "address": "asdasd",
-      "budget": "123",
-      "neededBy": "2023-03-29",
-      "completed": true,
-      "id": 1
-    },
-    {
-      "description": "1234123",
-      "address": "123",
-      "budget": "123",
-      "neededBy": "2023-03-08",
-      "completed": true,
-      "id": 2
-    },
-    {
-      "description": "one more try",
-      "address": "1233",
-      "budget": "123",
-      "neededBy": "2023-03-29",
-      "completed": true,
-      "id": 3
-    }
-  ]
+  "requests": []
 }

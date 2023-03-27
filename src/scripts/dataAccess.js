@@ -29,6 +29,7 @@ export const fetchCompletions = () => {
         .then(
             (data) => {
                 applicationState.completions = data
+                console.log(applicationState.completions)
             }
         )
 }
