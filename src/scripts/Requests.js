@@ -1,8 +1,8 @@
-import { getRequests, sendRequest, deleteRequest, saveCompletion, getPlumbers, getCompletions, updateRequestComplete} from "./dataAccess.js"
+import { getRequests, sendRequest, deleteRequest, saveCompletion, getPlumbers, getCompletions, updateRequestComplete } from "./dataAccess.js"
 import { createPlumberDropdown } from "./plumbers.js"
 
 export const Requests = () => {
-    
+
     const requests = getRequests()
 
     let html = `<ul>${requests.map(convertRequestToListElement).join("")}</ul>`
@@ -11,7 +11,7 @@ export const Requests = () => {
 
 const convertRequestToListElement = (objectFromArray) => {
 
-    if(!objectFromArray.completed){
+    if (!objectFromArray.completed) {
 
         return `
         <li>
@@ -26,67 +26,80 @@ const convertRequestToListElement = (objectFromArray) => {
                     id="request--${objectFromArray.id}">
                 Delete
             </button>
-        </li>`   
-        }
+        </li>`
+    }
 
-        else{
+    else {
+
+        //get most current completions and plumber arrays inside function
+        const completions = getCompletions()
+        const plumbers = getPlumbers()
+
+        //now we need to grab the plumbers name
+        for (const completion of completions) {
+            if (objectFromArray.id === parseInt(completion.requestId)) {
+                const matchingPlumber = plumbers.find((plumber) => {
+                    return parseInt(completion.plumberId) === plumber.id
+                })
 
                 return `
-                <li>
-                    <div>
-                    <img src="./images/icon.png">
-                    ${objectFromArray.description}
-                    </div>
-                    <div class='plumbers'>
-                    complete
-                    </div>
-                    <button class="request__delete"
-                            id="request--${objectFromArray.id}">
-                        Delete
-                    </button>
-                </li>`   
-                
-        }   
+                    <li>
+                        <div>
+                        <img src="./images/icon.png">
+                        ${objectFromArray.description}
+                        </div>
+                        <div class='plumbers'>
+                        completed by ${matchingPlumber.name}
+                        </div>
+                        <button class="request__delete"
+                                id="request--${objectFromArray.id}">
+                            Delete
+                        </button>
+                    </li>`
+            }
+
+        }
     }
+}
 
 
 const mainContainer = document.querySelector("#container")
 
 document.addEventListener("click", click => {
     if (click.target.id.startsWith("request--")) {
-        const [,requestId] = click.target.id.split("--")
+        const [, requestId] = click.target.id.split("--")
         deleteRequest(parseInt(requestId))
     }
 })
 
 
-mainContainer.addEventListener("change",(event) => {
+mainContainer.addEventListener("change", (event) => {
 
     if (event.target.id === "plumbers") {
-    
+
         //GRAB THE IDS FROM THE OPTION'S ID
         const [requestId, plumberId] = event.target.value.split("--")
 
         // CREATE A NEW COMPLETION OBJECT
-        const completion = { 
+        const completion = {
             requestId: requestId,
             plumberId: plumberId,
             date_created: `${Date.now()}`
         }
 
         //CALL THE SAVECOMPLETION FUNCTION PASSING IN THE OBJECT WE JUST CREATED
-        saveCompletion(completion).then( () => {
+        saveCompletion(completion).then(() => {
 
             //loop through requests, change completed to true on the matching request, then delete the old one and send the new one that is marked complete
             const requests = getRequests()
             let matchingRequest = null
-            for(const request of requests){
-                if(request.id === parseInt(requestId)){
+            for (const request of requests) {
+                if (request.id === parseInt(requestId)) {
                     matchingRequest = request
                     matchingRequest.completed = true
                 }
             }
-    
+
             console.log(`A completion has been created for request #${requestId}`)
 
             updateRequestComplete(requestId)
@@ -95,11 +108,11 @@ mainContainer.addEventListener("change",(event) => {
             //ALSO... NOT SAVING COMPLETION EVEN IF REST WORK. MAKE NO SENSE.
             // deleteRequest(requestId).then( () => {
 
-                // sendRequest(matchingRequest)
-                // console.log(`The request for ${matchingRequest.description} has been marked complete in the database`)
-                // mainContainer.dispatchEvent(new CustomEvent("stateChanged"))
+            // sendRequest(matchingRequest)
+            // console.log(`The request for ${matchingRequest.description} has been marked complete in the database`)
+            // mainContainer.dispatchEvent(new CustomEvent("stateChanged"))
 
-        //     })
+            //     })
         })
     }
 })
