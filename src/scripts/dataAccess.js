@@ -29,6 +29,7 @@ export const fetchCompletions = () => {
         .then(
             (data) => {
                 applicationState.completions = data
+                console.log(applicationState.completions)
             }
         )
 }
@@ -41,6 +42,10 @@ export const getRequests = () => {
 
 export const getPlumbers = () => {
     return applicationState.plumbers.map(obj => ({ ...obj }))
+}
+
+export const getCompletions = () => {
+    return applicationState.completions.map(obj => ({ ...obj }))
 }
 
 export const sendRequest = (userServiceRequest) => {
@@ -83,4 +88,20 @@ export const saveCompletion = (completedJob) => {
         .then(() => {
             mainContainer.dispatchEvent(new CustomEvent("stateChanged"))
         })
+}
+
+
+export const updateRequestComplete = (id) =>{
+
+fetch(`${API}/requests/${id}`, {
+  method: 'PATCH',
+  body: JSON.stringify({
+    completed: true,
+  }),
+  headers: {
+    'Content-type': 'application/json; charset=UTF-8',
+  },
+})
+  .then((response) => response.json())
+  .then(() => mainContainer.dispatchEvent(new CustomEvent("stateChanged")));
 }

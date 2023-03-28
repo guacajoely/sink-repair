@@ -1,7 +1,8 @@
-import { getRequests, sendRequest, deleteRequest, saveCompletion } from "./dataAccess.js"
+import { getRequests, sendRequest, deleteRequest, saveCompletion, getPlumbers, getCompletions, updateRequestComplete} from "./dataAccess.js"
 import { createPlumberDropdown } from "./plumbers.js"
 
 export const Requests = () => {
+    
     const requests = getRequests()
 
     let html = `<ul>${requests.map(convertRequestToListElement).join("")}</ul>`
@@ -12,43 +13,46 @@ const convertRequestToListElement = (objectFromArray) => {
 
     if(!objectFromArray.completed){
 
-    return `
-    <li>
-        <div>
-        <img src="./icon.png">
-        ${objectFromArray.description}
-        </div>
-        <div class='plumbers'>
-        ${createPlumberDropdown(objectFromArray)}
-        </div>
-        <button class="request__delete"
-                id="request--${objectFromArray.id}">
-            Delete
-        </button>
-    </li>`   
-    }
-
-    else{
         return `
         <li>
             <div>
-            <img src="./icon.png">
+            <img src="./images/icon.png">
             ${objectFromArray.description}
             </div>
             <div class='plumbers'>
-            COMPLETE
+            ${createPlumberDropdown(objectFromArray)}
             </div>
             <button class="request__delete"
                     id="request--${objectFromArray.id}">
                 Delete
             </button>
         </li>`   
+        }
+
+        else{
+
+                return `
+                <li>
+                    <div>
+                    <img src="./images/icon.png">
+                    ${objectFromArray.description}
+                    </div>
+                    <div class='plumbers'>
+                    complete
+                    </div>
+                    <button class="request__delete"
+                            id="request--${objectFromArray.id}">
+                        Delete
+                    </button>
+                </li>`   
+                
+        }   
     }
-}
+
 
 const mainContainer = document.querySelector("#container")
 
-mainContainer.addEventListener("click", click => {
+document.addEventListener("click", click => {
     if (click.target.id.startsWith("request--")) {
         const [,requestId] = click.target.id.split("--")
         deleteRequest(parseInt(requestId))
@@ -71,25 +75,32 @@ mainContainer.addEventListener("change",(event) => {
         }
 
         //CALL THE SAVECOMPLETION FUNCTION PASSING IN THE OBJECT WE JUST CREATED
-        saveCompletion(completion)
+        saveCompletion(completion).then( () => {
 
-        //loop through requests, change completed to true on the matching request, then delete the old one and send the new one that is marked complete
-        const requests = getRequests()
-        let matchingRequest = null
-        for(const request of requests){
-            if(request.id === parseInt(requestId)){
-                matchingRequest = request
-                matchingRequest.completed = true
-                delete matchingRequest.id
+            //loop through requests, change completed to true on the matching request, then delete the old one and send the new one that is marked complete
+            const requests = getRequests()
+            let matchingRequest = null
+            for(const request of requests){
+                if(request.id === parseInt(requestId)){
+                    matchingRequest = request
+                    matchingRequest.completed = true
+                }
             }
-        }
-  
-        console.log(`request id ${requestId} has been completed`)
+    
+            console.log(`A completion has been created for request #${requestId}`)
 
-        //CALLING DELETEREQUEST AND SAVEREQUEST FUNCTIONS MAKE COMPUTER MAD. WHY????
-        //ALSO... NOT SAVING COMPLETION EVEN IF REST WORK. MAKE NO SENSE.
-        // deleteRequest(requestId)
-        // sendRequest(matchingRequest)
+            updateRequestComplete(requestId)
+
+            //CALLING DELETEREQUEST AND SAVEREQUEST FUNCTIONS MAKE COMPUTER MAD. WHY????
+            //ALSO... NOT SAVING COMPLETION EVEN IF REST WORK. MAKE NO SENSE.
+            // deleteRequest(requestId).then( () => {
+
+                // sendRequest(matchingRequest)
+                // console.log(`The request for ${matchingRequest.description} has been marked complete in the database`)
+                // mainContainer.dispatchEvent(new CustomEvent("stateChanged"))
+
+        //     })
+        })
     }
 })
 
