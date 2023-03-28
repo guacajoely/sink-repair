@@ -1,5 +1,5 @@
 const applicationState = {}
-const API = "http://localhost:8088"
+const API = "https://sink-repair-api-6qpwo.ondigitalocean.app"
 const mainContainer = document.querySelector("#container")
 
 export const fetchRequests = () => {
